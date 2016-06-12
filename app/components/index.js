@@ -1,5 +1,9 @@
-import helloComponent from './hello';
+import hello from './hello';
+import card from './card';
+import map from './map';
 
 export default () => {
-  helloComponent();
+  hello();
+  card();
+  map();
 }
