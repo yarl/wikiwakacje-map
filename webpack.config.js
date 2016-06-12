@@ -13,7 +13,7 @@ var config = {
     loaders: [
       {
         test: /\.jsx?$/,
-        exclude: /(node_modules|bower_components)/,
+        exclude: /node_modules/,
         loader: 'babel',
         query: {
           presets: ['es2015']
@@ -21,23 +21,20 @@ var config = {
       },
       {
         test: /\.jsx?$/,
-        exclude: /(node_modules|bower_components)/,
+        exclude: /node_modules/,
         loader: 'ng-annotate',
       },
       {
-        test: /\.html?$/,
-        exclude: /(node_modules|bower_components)/,
-        loader: 'raw'
+        test: /\.html?$/, loader: 'raw'
       },
       {
-        test: /\.css$/,
-        exclude: /(node_modules|bower_components)/,
-        loader: 'style!css'
+        test: /\.css$/, loader: 'style!css'
       },
       {
-        test: /\.scss$/,
-        exclude: /(node_modules|bower_components)/,
-        loader: 'style!css!sass'
+        test: /\.scss$/, loader: 'style!css!sass'
+      },
+      { 
+        test: /\.(png|woff|woff2|eot|ttf|svg)$/, loader: 'url-loader?limit=100000'
       }
     ]
   }
