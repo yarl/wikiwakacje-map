@@ -1,0 +1,14 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,500,300&subset=latin,latin-ext);
+
+md-card {
+  .card-media {
+    background: #ccc;
+  }
+
+  .card-photo {
+    width: auto;
+    height: auto;
+    max-width: 80px;
+    max-height: 80px;
+  }
+}

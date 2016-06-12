@@ -1,8 +1,8 @@
-import $ from 'jquery';
-
 const MapComponent = {
-  bindings: {},
-  controller: function($scope, $http) {
+  bindings: {
+    cards: '='
+  },
+  controller: function($scope, $http, dataService) {
     let vm = this;
     vm.bounds = "",
     vm.center = {
@@ -26,29 +26,11 @@ const MapComponent = {
         return;
       }
 
-      const c = vm.bounds;
-      $.ajax({
-         type: 'GET',
-          url: "https://tools.wmflabs.org/heritage/api/api.php",
-          data: {
-            action: "search",
-            format: "json",
-            limit: "100",
-            callback: "jsonCallback",
-            srcountry: "pl",
-            bbox: [c.southWest.lng, c.southWest.lat, c.northEast.lng, c.northEast.lat].join(',')
-          },
-          async: false,
-          jsonpCallback: 'jsonCallback',
-          contentType: "application/json",
-          dataType: 'jsonp',
-          success: function(json) {
-             console.log('yes', json);
-          },
-          error: function(e) {
-             console.log('no', e);
-          }
-      });
+      dataService.getMonuments(vm.bounds).then((data) => {
+        vm.cards = data;
+      }, (data) => {
+        //error
+      })
     }
 
   },

@@ -3,21 +3,20 @@ import ngMaterial from 'angular-material';
 import leaflet from 'leaflet';
 import ngLeaflet from 'angular-leaflet-directive';
 
-import './style.css';
+import './style.scss';
 import 'angular-material/angular-material.css';
 import 'material-design-icons/iconfont/material-icons.css';
 import 'leaflet/dist/leaflet.css';
 
 import components from './components';
+import services from './services';
 
 angular.module('app', ['ngMaterial', 'leaflet-directive']);
 
 const MainComponent = {
   bindings: {},
   controller: function($scope) {
-    this.greeting = "Welcome";
-    this.name = "Edward";
-
+    this.cards = [];
   },
   template: `<md-toolbar class="md-hue-2">
       <div class="md-toolbar-tools">
@@ -36,14 +35,11 @@ const MainComponent = {
         </md-button>
       </div>
     </md-toolbar>
-    <div layout="row" layout-xs="column">
-      <div style="width: 300px">
-        <card></card>
-        <card></card>
-        <card></card>
-        <hello></hello>
+    <div layout="row" layout-xs="column" style="height: calc(100vh - 48px)">
+      <div flex="40" style="overflow: auto;">
+        <card ng-repeat="card in $ctrl.cards" data="card"></card>
       </div>
-      <ww-map flex layout="row"></ww-map>
+      <ww-map flex layout="row" cards="$ctrl.cards"></ww-map>
     </div>`
 };
 
@@ -52,3 +48,4 @@ angular
   .component('appMain', MainComponent);
 
 components();
+services();
