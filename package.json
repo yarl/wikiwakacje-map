@@ -6,7 +6,8 @@
   "repository": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --content-base app --progress --colors",
+    "start-live": "webpack-dev-server --content-base app --progress --colors",
+    "start": "webpack --watch --content-base app --progress --colors",
     "build": "cross-env NODE_ENV=production webpack"
   },
   "keywords": [],
