@@ -16,7 +16,11 @@ angular.module('app', ['ngMaterial', 'leaflet-directive']);
 const MainComponent = {
   bindings: {},
   controller: function($scope) {
-    this.cards = [];
+    let vm = this;
+
+    vm.loading = false;
+    vm.cards = [];
+    vm.highlight = "";
   },
   template: `<md-toolbar class="md-hue-2">
       <div class="md-toolbar-tools">
@@ -36,10 +40,19 @@ const MainComponent = {
       </div>
     </md-toolbar>
     <div layout="row" layout-xs="column" style="height: calc(100vh - 48px)">
-      <div flex="40" style="overflow: auto;">
-        <card ng-repeat="card in $ctrl.cards" data="card"></card>
+      <div class="ww-sidebar"
+           flex="40" layout="column" layout-align="start center">
+        <md-progress-circular md-mode="indeterminate"
+                              md-diameter="60"
+                              ng-show="$ctrl.loading"></md-progress-circular>
+        <card ng-repeat="card in $ctrl.cards"
+              ng-class="$ctrl.highlight === card.id ? 'active' : 'inactive'"
+              data="card"></card>
       </div>
-      <ww-map flex layout="row" cards="$ctrl.cards"></ww-map>
+      <ww-map flex layout="row"
+              cards="$ctrl.cards"
+              loading="$ctrl.loading"
+              highlight="$ctrl.highlight"></ww-map>
     </div>`
 };
 

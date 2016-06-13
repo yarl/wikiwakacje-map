@@ -1,10 +1,14 @@
 const MapComponent = {
   bindings: {
-    cards: '='
+    loading: '=',
+    cards: '=',
+    highlight: '='
   },
   controller: function($scope, $http, dataService) {
     let vm = this;
     vm.bounds = "",
+    vm.markers = {};
+
     vm.center = {
         lat: 52.093,
         lng: 19.468,
@@ -18,7 +22,14 @@ const MapComponent = {
     };
 
     $scope.$on('leafletDirectiveMap.dragend', function(event) {
+      vm.loading = true;
+      vm.markers = {};
+      vm.cards = [];
       getMonuments();
+    });
+
+    $scope.$on('leafletDirectiveMarker.mouseover', function(event, args) {
+      vm.highlight = args.modelName;
     });
 
     function getMonuments() {
@@ -27,16 +38,26 @@ const MapComponent = {
       }
 
       dataService.getMonuments(vm.bounds).then((data) => {
+        vm.loading = false;
         vm.cards = data;
+
+        for(let element of data) {
+          vm.markers[element.id] = {
+            lat: element.lat,
+            lng: element.lon,
+            message: element.name
+          }
+        }
+        console.log(vm.markers);
       }, (data) => {
         //error
       })
     }
-
   },
   template: `<leaflet flex
       lf-center="$ctrl.center"
       event-broadcast="$ctrl.events"
+      markers="$ctrl.markers"
       bounds="$ctrl.bounds"></leaflet>`
 };
 

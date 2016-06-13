@@ -1,6 +1,30 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,500,300&subset=latin,latin-ext);
 
-md-card {
+.ww-sidebar {
+  overflow: auto;
+
+  card {
+    width: 100%;
+
+    &.active .wiki-card {
+      background: #f7f7f7;
+    }
+  }
+}
+
+.wiki-card {
+  &:hover {
+    background: #f7f7f7;
+  }
+
+  md-card-title {
+    padding: 16px;
+
+    md-card-title-media {
+        margin: 0;
+    }
+  }
+
   .card-media {
     background: #ccc;
   }
