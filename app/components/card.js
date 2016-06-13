@@ -2,13 +2,22 @@ const CardComponent = {
   bindings: {
     data: '='
   },
-  controller: function($http) {
+  controller: function() {
+    function dewikify(text) {
+      return text.replace(/\[\[[^\[\]\|]*\|([^\[\]\|]*)\]\]/g, "$1");
+    }
+
+    let vm = this;
+    vm.data.name_ = dewikify(vm.data.name);
+    vm.data.address_ = dewikify(vm.data.address);
+
+    console.log(vm.data);
   },
-  template: `<md-card md-theme="default" md-theme-watch>
+  template: `<md-card md-theme="default" md-theme-watch class="wiki-card">
         <md-card-title>
           <md-card-title-text>
-            <span class="md-headline">{{$ctrl.data.name}}</span>
-            <span class="md-subhead">{{$ctrl.data.address}}</span>
+            <span class="md-headline"><small>{{$ctrl.data.name_}}</small></span>
+            <span class="md-subhead">{{$ctrl.data.address_}}</span>
           </md-card-title-text>
           <md-card-title-media>
             <div class="md-media-sm card-media"
