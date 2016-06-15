@@ -4,16 +4,11 @@ const MapComponent = {
     cards: '=',
     highlight: '='
   },
-  controller: function($scope, $http, dataService) {
+  controller: function($scope, $http, $location, $timeout, dataService, mapService) {
     let vm = this;
     vm.bounds = "",
     vm.markers = {};
-
-    vm.center = {
-        lat: 52.093,
-        lng: 19.468,
-        zoom: 7
-    };
+    vm.center = mapService.center;
     vm.events = {
         map: {
             enable: ['dragend'],
