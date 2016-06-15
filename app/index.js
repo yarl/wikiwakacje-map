@@ -28,7 +28,7 @@ const MainComponent = {
           <md-icon>menu</md-icon>
         </md-button>
         <h2>
-          <span>Toolbar with Disabled/Enabled Icon Buttons</span>
+          <span>Wakacje z Wikipedią</span>
         </h2>
         <span flex></span>
         <md-button class="md-icon-button" aria-label="Favorite">
@@ -39,17 +39,12 @@ const MainComponent = {
         </md-button>
       </div>
     </md-toolbar>
-    <div layout="row" layout-xs="column" style="height: calc(100vh - 48px)">
-      <div class="ww-sidebar"
-           flex="40" layout="column" layout-align="start center">
-        <md-progress-circular md-mode="indeterminate"
-                              md-diameter="60"
-                              ng-show="$ctrl.loading"></md-progress-circular>
-        <card ng-repeat="card in $ctrl.cards"
-              ng-class="$ctrl.highlight === card.id ? 'active' : 'inactive'"
-              data="card"></card>
-      </div>
-      <ww-map flex layout="row"
+    <div class="ww-container" layout="row" layout-xs="column">
+      <ww-sidebar flex="40"
+                  cards="$ctrl.cards"
+                  loading="$ctrl.loading"
+                  highlight="$ctrl.highlight"></ww-sidebar>
+      <ww-map flex layout="column"
               cards="$ctrl.cards"
               loading="$ctrl.loading"
               highlight="$ctrl.highlight"></ww-map>
