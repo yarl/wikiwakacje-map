@@ -21,12 +21,6 @@
   border-radius: 10px;
 }
 
-// FIXES
-
-.leaflet-top, .leaflet-bottom {
-  z-index: 10;
-}
-
 // WW
 
 .ww-container {
@@ -58,6 +52,12 @@ ww-sidebar {
     md-list-item {
       border-top: 1px solid rgba(0,0,0,0.12);
     }
+  }
+}
+
+ww-map {
+  .leaflet-top, .leaflet-bottom {
+    z-index: 10;
   }
 }
 
