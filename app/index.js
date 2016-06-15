@@ -18,7 +18,10 @@ const MainComponent = {
   controller: function($scope) {
     let vm = this;
 
-    vm.loading = false;
+    vm.loading = {
+      active: false,
+      dragSearch: true
+    };
     vm.cards = [];
     vm.highlight = "";
   },

@@ -1,38 +1,104 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,500,300&subset=latin,latin-ext);
 
-.ww-sidebar {
-  overflow: auto;
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  background: #ccc;
+}
 
-  card {
+::-webkit-scrollbar-track {
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+}
+
+// FIXES
+
+.leaflet-top, .leaflet-bottom {
+  z-index: 10;
+}
+
+// WW
+
+.ww-container {
+  height: calc(100vh - 64px);
+}
+
+ww-sidebar {
+  position: relative;
+  background: #fafafa;
+
+  .ww-cards {
+    overflow: auto;
     width: 100%;
+    height: calc(100vh - 128px);
+  }
 
-    &.active .wiki-card {
-      background: #f7f7f7;
+  .ww-cards-loading {
+    position: absolute;
+    width: 100%;
+    height: calc(100vh - 128px);
+    background: rgba(255,255,255,.8);
+    z-index: 5;
+  }
+
+  .ww-sidebar-options {
+    width: 100%;
+    padding: 0;
+
+    md-list-item {
+      border-top: 1px solid rgba(0,0,0,0.12);
     }
   }
 }
 
-.wiki-card {
-  &:hover {
-    background: #f7f7f7;
-  }
+.ww-card-container {
+  width: 100%;
 
-  md-card-title {
-    padding: 16px;
+  .ww-card {
+    margin: 8px 16px;
 
-    md-card-title-media {
-        margin: 0;
+    md-card-title {
+      padding: 16px;
+
+      md-card-title-media {
+          margin: 0;
+      }
+    }
+
+    .card-media {
+      background: #ccc;
+    }
+
+    .card-photo {
+      width: auto;
+      height: auto;
+      max-width: 80px;
+      max-height: 80px;
     }
   }
 
-  .card-media {
-    background: #ccc;
+  &.ww-card-active .ww-card {
+    background: #f0f0f0;
   }
+}
 
-  .card-photo {
-    width: auto;
-    height: auto;
-    max-width: 80px;
-    max-height: 80px;
+.ww-details {
+  .ww-details-photo {
+    background: #ccc;
+
+    img {
+      max-width: 100%;
+      max-height: 200px;
+    }
   }
 }
