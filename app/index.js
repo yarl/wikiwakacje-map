@@ -11,7 +11,12 @@ import 'leaflet/dist/leaflet.css';
 import components from './components';
 import services from './services';
 
-angular.module('app', ['ngMaterial', 'leaflet-directive']);
+angular.module('app', ['ngMaterial', 'leaflet-directive'])
+  .config(function($mdThemingProvider) {
+    $mdThemingProvider.theme('default')
+      .primaryPalette('blue-grey')
+      .accentPalette('red');
+  });
 
 const MainComponent = {
   bindings: {},
@@ -42,7 +47,7 @@ const MainComponent = {
         </md-button>
       </div>
     </md-toolbar>
-    <div class="ww-container" layout="row" layout-xs="column">
+    <div class="ww-container" layout="row">
       <ww-sidebar flex="40"
                   cards="$ctrl.cards"
                   loading="$ctrl.loading"

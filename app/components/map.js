@@ -17,7 +17,7 @@ const MapComponent = {
     };
     vm.dragSearch = true;
     vm.icon = {
-        iconUrl: 'data/marker.png',
+        iconUrl: 'data/marker-red.png',
         shadowUrl: 'data/marker-shadow.png',
         iconSize:     [29, 41],
         shadowSize:   [41, 41],
