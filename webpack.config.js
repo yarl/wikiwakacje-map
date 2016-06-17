@@ -5,7 +5,7 @@ var config = {
   context: path.join(__dirname, "app"),
   entry: './index.js',
   output: {
-    path: path.join(__dirname, "app"),
+    path: path.join(__dirname, "app", "assets"),
     filename: 'bundle.js'
   },
   plugins: [],
@@ -33,7 +33,7 @@ var config = {
       {
         test: /\.scss$/, loader: 'style!css!sass'
       },
-      { 
+      {
         test: /\.(png|woff|woff2|eot|ttf|svg)$/, loader: 'url-loader?limit=100000'
       }
     ]
