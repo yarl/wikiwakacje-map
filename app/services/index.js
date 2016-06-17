@@ -1,7 +1,9 @@
 import data from './data';
-import map from './mapService';
+import mapService from './mapService';
+import versionService from './versionService';
 
 export default () => {
   data();
-  map();
+  mapService();
+  versionService();
 }

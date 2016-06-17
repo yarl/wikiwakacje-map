@@ -68,6 +68,28 @@ ww-sidebar {
 }
 
 ww-map {
+  .ww-map-switcher {
+    position: absolute;
+    z-index: 10;
+    right: 0;
+
+    .md-button {
+      width: 70px;
+      height: 70px;
+      font-size: 12px;
+      padding: 0;
+      min-width: 70px;
+      margin-left: 0;
+      margin-top: 10px;
+      margin-right: 10px;
+
+      .material-icons {
+        display: block;
+        margin-top: 10px;
+      }
+    }
+  }
+
   .leaflet-top, .leaflet-bottom {
     z-index: 10;
   }

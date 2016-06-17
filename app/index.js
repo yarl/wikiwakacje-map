@@ -12,15 +12,15 @@ import components from './components';
 import services from './services';
 
 angular.module('app', ['ngMaterial', 'leaflet-directive'])
-  .config(function($mdThemingProvider) {
-    $mdThemingProvider.theme('default')
-      .primaryPalette('blue-grey')
-      .accentPalette('red');
-  });
+  .config(['$mdThemingProvider', '$provide', function($mdThemingProvider, $provide) {
+      $mdThemingProvider.generateThemesOnDemand(true);
+      $mdThemingProvider.alwaysWatchTheme(true);
+      $provide.value('themeProvider', $mdThemingProvider);
+  }]);
 
 const MainComponent = {
   bindings: {},
-  controller: function($scope) {
+  controller: function($scope, $mdTheming, versionService) {
     let vm = this;
 
     vm.loading = {
@@ -29,6 +29,8 @@ const MainComponent = {
     };
     vm.cards = [];
     vm.highlight = "";
+
+    versionService.setVersion('monuments');
   },
   template: `<md-toolbar class="md-hue-2">
       <div class="md-toolbar-tools">

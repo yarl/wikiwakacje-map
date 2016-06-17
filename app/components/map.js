@@ -4,11 +4,12 @@ const MapComponent = {
     cards: '=',
     highlight: '='
   },
-  controller: function($scope, $http, $location, $timeout, dataService, mapService) {
+  controller: function($scope, $http, $location, $timeout, dataService, mapService, versionService) {
     let vm = this;
     vm.bounds = "",
     vm.markers = {};
     vm.center = mapService.center;
+    vm.changeVersion = changeVersion;
     vm.events = {
         map: {
             enable: ['dragend', 'zoomend'],
@@ -16,14 +17,7 @@ const MapComponent = {
         }
     };
     vm.dragSearch = true;
-    vm.icon = {
-        iconUrl: 'data/marker-red.png',
-        shadowUrl: 'data/marker-shadow.png',
-        iconSize:     [29, 41],
-        shadowSize:   [41, 41],
-        iconAnchor:   [15, 41],
-        shadowAnchor: [12, 41],
-    };
+    vm.icon = mapService.icons.normal;
 
     $timeout(() => { getMonuments(); });
 
@@ -50,6 +44,10 @@ const MapComponent = {
     });
 
     // FUNCTIONS
+
+    function changeVersion(version) {
+      versionService.setVersion(version);
+    }
 
     function getMonuments() {
       if(vm.center.zoom < 12 || !vm.bounds) {
@@ -84,7 +82,24 @@ const MapComponent = {
       })
     }
   },
-  template: `<leaflet flex
+  template: `<div class="ww-map-switcher">
+    <md-button class="md-raised"
+               ng-click="$ctrl.changeVersion('monuments')">
+      <md-icon>account_balance</md-icon>
+      <span>Zabytki</span>
+    </md-button>
+    <md-button class="md-raised"
+               ng-click="$ctrl.changeVersion('nature')">
+      <md-icon>cloud</md-icon>
+      <span>Przyroda</span>
+    </md-button>
+    <md-button class="md-raised"
+               ng-click="$ctrl.changeVersion('art')">
+      <md-icon>extension</md-icon>
+      <span>Sztuka</span>
+    </md-button>
+  </div>
+  <leaflet flex
       lf-center="$ctrl.center"
       url-hash-center="yes"
       event-broadcast="$ctrl.events"
