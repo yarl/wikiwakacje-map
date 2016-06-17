@@ -31,10 +31,22 @@ ww-sidebar {
   position: relative;
   background: #fafafa;
 
+  .ww-sidebar-info {
+    padding: 25px 10px;
+    color: #757575;
+    opacity: .5;
+    text-align: center;
+
+    .material-icons {
+      font-size: 50px;
+    }
+  }
+
   .ww-cards {
     overflow: auto;
     width: 100%;
     height: calc(100vh - 128px);
+    background: #fafafa;
   }
 
   .ww-cards-loading {

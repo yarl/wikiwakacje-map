@@ -52,7 +52,15 @@ const MapComponent = {
     // FUNCTIONS
 
     function getMonuments() {
-      if(vm.center.zoom < 12 || !vm.bounds || mapService.forceMapState) {
+      if(vm.center.zoom < 12 || !vm.bounds) {
+        vm.loading.active = false;
+        vm.cards = [];
+        vm.markers = {};
+        vm.highlight = "";
+        return;
+      }
+
+      if(mapService.forceMapState) {
         mapService.forceMapState = false;
         return;
       }

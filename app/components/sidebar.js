@@ -6,16 +6,24 @@ const SidebarComponent = {
     highlight: '=',
     loading: '='
   },
-  controller: function($scope) {
+  controller: function($scope, mapService) {
     var vm = this;
+    vm.mapPosition = mapService.center;
     var cardContainer = $('.ww-cards');
+
+    // WATCH
 
     $scope.$watch(() => vm.highlight, function (id) {
       if(!id) return;
-      var myElement = document.querySelector('card[data-id="'+id+'"]');
-      cardContainer.animate({scrollTop: myElement.offsetTop-6}, "quick");
+      scrollToId(id);
     });
 
+    // FUNCTIONS
+
+    function scrollToId(id) {
+      var myElement = document.querySelector('card[data-id="'+id+'"]');
+      cardContainer.animate({scrollTop: myElement.offsetTop-6}, "quick");
+    }
   },
   template: `<div class="ww-sidebar"
                    layout="column"
@@ -28,6 +36,18 @@ const SidebarComponent = {
                              md-diameter="60"></md-progress-circular>
        </div>
       <div class="ww-cards">
+        <div class="ww-sidebar-info"
+             layout="column" layout-align="center center"
+             ng-show="$ctrl.mapPosition.zoom < 12">
+          <md-icon>info_outline</md-icon>
+          <span class="md-headline">Przybliż mapę, aby zobaczyć zabytki</span>
+        </div>
+        <div class="ww-sidebar-info"
+             layout="column" layout-align="center center"
+             ng-show="!$ctrl.cards">
+          <md-icon>warning</md-icon>
+          <span class="md-headline">Brak zabytków na tym obszarze</span>
+        </div>
         <card class="ww-card-container"
               ng-repeat="card in $ctrl.cards"
               ng-class="$ctrl.highlight === card.id ? 'ww-card-active' : 'ww-card-inactive'"
