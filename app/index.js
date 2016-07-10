@@ -20,7 +20,7 @@ angular.module('app', ['ngMaterial', 'leaflet-directive'])
 
 const MainComponent = {
   bindings: {},
-  controller: function($scope, $mdTheming, versionService) {
+  controller: function($scope, $mdTheming, dataService, versionService) {
     let vm = this;
 
     vm.loading = {

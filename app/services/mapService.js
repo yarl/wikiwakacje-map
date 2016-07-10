@@ -1,3 +1,5 @@
+import L from 'leaflet';
+
 const MapService = function() {
   return {
     forceMapState: false,
@@ -15,6 +17,15 @@ const MapService = function() {
           iconAnchor:   [15, 41],
           shadowAnchor: [12, 41],
       }
+    },
+    tiles: {
+        gdos: L.tileLayer.wms("http://sdi.gdos.gov.pl/wms", {
+          layers: 'SpecjalneObszaryOchrony,ObszarySpecjalnejOchrony,ZespolyPrzyrodniczoKrajobrazowe,ParkiNarodowe,ParkiKrajobrazowe,Rezerwaty,PomnikiPrzyrody',
+          format: 'image/png',
+          styles: 'soo$1$3,oso$1$3,zespoly$1$3,pn$1$3,pk$1$3,rez$1$3,pp$1$3',
+          transparent: true,
+          attribution: "Generalna Dyrekcja Ochrony Środowiska"
+        })
     }
   }
 }

@@ -6,9 +6,10 @@ const SidebarComponent = {
     highlight: '=',
     loading: '='
   },
-  controller: function($scope, mapService) {
+  controller: function($scope, mapService, versionService) {
     var vm = this;
     vm.mapPosition = mapService.center;
+    vm.version = versionService.getVersion;
     var cardContainer = $('.ww-cards');
 
     // WATCH
@@ -40,13 +41,19 @@ const SidebarComponent = {
              layout="column" layout-align="center center"
              ng-show="$ctrl.mapPosition.zoom < 12">
           <md-icon>info_outline</md-icon>
-          <span class="md-headline">Przybliż mapę, aby zobaczyć zabytki</span>
+          <span class="md-headline">Przybliż mapę, aby pobrać obiekty</span>
+        </div>
+        <div class="ww-sidebar-info"
+             layout="column" layout-align="center center"
+             ng-show="$ctrl.version() === 'nature' && $ctrl.mapPosition.zoom >= 12">
+          <md-icon>warning</md-icon>
+          <span class="md-headline">Kliknij na mapę aby pobrać obiekty</span>
         </div>
         <div class="ww-sidebar-info"
              layout="column" layout-align="center center"
              ng-show="!$ctrl.cards">
           <md-icon>warning</md-icon>
-          <span class="md-headline">Brak zabytków na tym obszarze</span>
+          <span class="md-headline">Brak obiektów na tym obszarze</span>
         </div>
         <card class="ww-card-container"
               ng-repeat="card in $ctrl.cards"
@@ -57,7 +64,7 @@ const SidebarComponent = {
       <md-list class="ww-sidebar-options">
         <md-list-item>
           <p>Szukaj podczas przesuwania mapy</p>
-          <md-switch ng-model="$ctrl.loading.dragSearch" aria-label="Switch 1"></md-switch>
+          <md-switch ng-model="$ctrl.loading.dragSearch" aria-label="Switch"></md-switch>
         </md-list-item>
       </md-list>
     </div>`

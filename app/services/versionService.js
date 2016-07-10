@@ -1,8 +1,22 @@
 const VersionService = function($timeout, $mdTheming, themeProvider) {
-  var versions = {
+  const versions = {
     monuments: ['blue-grey', 'red'],
     nature: ['green', 'red'],
     art: ['pink', 'red']
+  }
+
+  const service = {
+    version: 'monuments',
+    getVersion: getVersion,
+    setVersion: setVersion
+  }
+
+  return service;
+
+  ////
+
+  function getVersion() {
+    return service.version;
   }
 
   function setVersion(version) {
@@ -11,11 +25,8 @@ const VersionService = function($timeout, $mdTheming, themeProvider) {
         .accentPalette(versions[version][1]);
       $mdTheming.generateTheme(version);
       themeProvider.setDefaultTheme(version);
-  }
-
-  return {
-      version: 'monuments',
-      setVersion: setVersion
+      service.version = version;
+      console.log(service);
   }
 }
 

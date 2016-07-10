@@ -47,6 +47,7 @@
     "angular-ui-router": "^0.2.13",
     "jquery": "^3.0.0",
     "leaflet": "^0.7.7",
-    "material-design-icons": "^2.2.3"
+    "material-design-icons": "^2.2.3",
+    "proj4": "^2.3.14"
   }
 }

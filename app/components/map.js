@@ -4,7 +4,7 @@ const MapComponent = {
     cards: '=',
     highlight: '='
   },
-  controller: function($scope, $http, $location, $timeout, dataService, mapService, versionService) {
+  controller: function($scope, $http, $location, $timeout, dataService, mapService, versionService, leafletData) {
     let vm = this;
     vm.bounds = "",
     vm.markers = {};
@@ -12,26 +12,33 @@ const MapComponent = {
     vm.changeVersion = changeVersion;
     vm.events = {
         map: {
-            enable: ['dragend', 'zoomend'],
+            enable: ['dragend', 'zoomend', 'click'],
             logic: 'emit'
         }
     };
     vm.dragSearch = true;
     vm.icon = mapService.icons.normal;
 
-    $timeout(() => { getMonuments(); });
+    $timeout(() => { getObjects(); });
 
     // LISTENERS
 
     $scope.$on('leafletDirectiveMap.dragend', (event, args) => {
       if(vm.loading.dragSearch) {
-        $timeout(() => { getMonuments(); });
+        $timeout(() => { getObjects(); });
       }
     });
 
     $scope.$on('leafletDirectiveMap.zoomend', (event, args) => {
       if(vm.loading.dragSearch) {
-        $timeout(() => { getMonuments(); });
+        $timeout(() => { getObjects(); });
+      }
+    });
+
+    $scope.$on('leafletDirectiveMap.click', (event, args) => {
+      if(versionService.getVersion() === "nature") {
+        let coords = args.leafletEvent.latlng;
+        $timeout(() => { getNature(coords); });
       }
     });
 
@@ -46,7 +53,59 @@ const MapComponent = {
     // FUNCTIONS
 
     function changeVersion(version) {
+      vm.cards = [];
+      vm.markers = {};
       versionService.setVersion(version);
+
+      leafletData.getMap().then(function(map) {
+        version === "nature" ?
+          map.addLayer(mapService.tiles.gdos) :
+          map.removeLayer(mapService.tiles.gdos);
+      });
+      $timeout(() => { getObjects(); });
+    }
+
+    function getObjects() {
+      const version = versionService.version;
+      if(version === "monuments") {
+        getMonuments();
+      } else if (version === "art") {
+        getArt();
+      }
+    }
+
+    function getNature(coords) {
+      if(vm.center.zoom < 12 || !vm.center) {
+        vm.loading.active = false;
+        vm.cards = [];
+        vm.markers = {};
+        vm.highlight = "";
+        return;
+      }
+
+      vm.loading.active = true;
+      dataService.getNature(coords).then((data) => {
+        data = data.data.map(element => {
+          return {
+            name: element.info.name || element.info.obiekt,
+            id: element.info.kodinspire,
+            type: element.layer
+          }
+        });
+
+        vm.cards = {};
+        const cards = {};
+        data.forEach(element => {
+          cards[element.id] = element;
+        });
+        vm.cards = cards;
+        console.log(vm.cards);
+        vm.loading.active = false;
+        vm.highlight = "";
+      })
+    }
+
+    function getArt() {
     }
 
     function getMonuments() {
@@ -93,11 +152,11 @@ const MapComponent = {
       <md-icon>cloud</md-icon>
       <span>Przyroda</span>
     </md-button>
-    <md-button class="md-raised"
+    <!--<md-button class="md-raised"
                ng-click="$ctrl.changeVersion('art')">
       <md-icon>extension</md-icon>
       <span>Sztuka</span>
-    </md-button>
+    </md-button>-->
   </div>
   <leaflet flex
       lf-center="$ctrl.center"
