@@ -99,7 +99,6 @@ const MapComponent = {
           cards[element.id] = element;
         });
         vm.cards = cards;
-        console.log(vm.cards);
         vm.loading.active = false;
         vm.highlight = "";
       })
@@ -135,7 +134,6 @@ const MapComponent = {
             icon: vm.icon
           }
         }
-        console.log(vm.markers);
       }, (data) => {
         //error
       })

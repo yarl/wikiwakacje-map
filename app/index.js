@@ -38,15 +38,9 @@ const MainComponent = {
           <md-icon>menu</md-icon>
         </md-button>
         <h2>
-          <span>Wakacje z Wikipedią</span>
+          <span>Wikiwakacje</span>
         </h2>
         <span flex></span>
-        <md-button class="md-icon-button" aria-label="Favorite">
-          <md-icon>favorite</md-icon>
-        </md-button>
-        <md-button class="md-icon-button" aria-label="More">
-          <md-icon>more_vert</md-icon>
-        </md-button>
       </div>
     </md-toolbar>
     <div class="ww-container" layout="row">

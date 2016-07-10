@@ -26,7 +26,6 @@ const VersionService = function($timeout, $mdTheming, themeProvider) {
       $mdTheming.generateTheme(version);
       themeProvider.setDefaultTheme(version);
       service.version = version;
-      console.log(service);
   }
 }
 
