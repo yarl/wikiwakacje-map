@@ -121,6 +121,7 @@ function getTemplate() {
           <md-card-title-text ng-show="$ctrl.version === 'nature'">
             <span class="md-headline"><small>{{$ctrl.data.name}}</small></span>
             <span class="md-subhead">{{$ctrl.natureTypes[$ctrl.data.type] || $ctrl.data.type}}</span>
+            <small>(ID: {{$ctrl.data.id || "?"}})</small>
           </md-card-title-text>
           <md-card-title-media ng-if="$ctrl.version === 'monuments'">
             <div class="md-media-sm card-media"
