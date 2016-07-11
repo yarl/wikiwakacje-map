@@ -38,7 +38,7 @@ const MainComponent = {
           <md-icon>menu</md-icon>
         </md-button>
         <h2>
-          <span>Wikiwakacje</span>
+          <a href="http://wikiwakacje.pl">Wikiwakacje</a>
         </h2>
         <span flex></span>
       </div>
