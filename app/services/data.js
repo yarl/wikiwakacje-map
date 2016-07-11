@@ -5,6 +5,7 @@ const DataService = function($http, $q) {
   let lastCoord = {};
 
   const service = {
+    getArt: getArt,
     getMonuments: getMonuments,
     getNature: getNature,
     getLastCoord: getLastCoord
@@ -13,6 +14,24 @@ const DataService = function($http, $q) {
   return service;
 
   ////
+
+  function getArt(bounds) {
+    const b = bounds;
+    const bbox = [b.southWest.lat, b.southWest.lng, b.northEast.lat, b.northEast.lng].join(',');
+    return $http({
+        method : "POST",
+        url : "http://overpass-api.de/api/interpreter",
+        data: ['[out:json][timeout:25];',
+          '(',
+            'node["historic"="wayside_shrine"]('+bbox+');',
+            'node["historic"="memorial"]('+bbox+');',
+            'node["historic"="monument"]('+bbox+');',
+            'node["man_made"="cross"]('+bbox+');',
+            'node["tourism"="artwork"]('+bbox+');',
+          ');',
+          'out body; >; out skel qt;'].join("")
+    });
+  }
 
   function getMonuments(bounds) {
     const b = bounds;
