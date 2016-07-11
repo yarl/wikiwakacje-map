@@ -10,9 +10,19 @@ const CardComponent = {
 
     let vm = this;
     vm.showDetails = showDetails;
+    vm.showNatureDetails = showNatureDetails;
     vm.showOnMap = showOnMap;
     vm.upload = upload;
     vm.version = versionService.getVersion();
+
+    vm.natureTypes = {
+      Rezerwaty: "rezerwat przyrody",
+      ParkiKrajobrazowe: "park krajobrazowy",
+      ObszarySpecjalnejOchrony: "obszar specjalnej ochrony ptaków",
+      SpecjalneObszaryOchrony: "specjalny obszar ochrony siedlisk",
+      ParkiNarodowe: "park narodowy",
+      PomnikiPrzyrody: "pomnik przyrody"
+    };
 
     // FUNCTIONS
 
@@ -40,6 +50,10 @@ const CardComponent = {
         url += "&lat="+dataService.getLastCoord().lat+"&lon="+dataService.getLastCoord().lng;
       }
       $window.open(url, "_blank");
+    }
+
+    function showNatureDetails(data) {
+      $window.open("http://crfop.gdos.gov.pl/CRFOP/widok/viewfop.jsf?fop="+data.id, "_blank");
     }
 
     function showDetails(event, data) {
@@ -106,7 +120,7 @@ function getTemplate() {
           </md-card-title-text>
           <md-card-title-text ng-show="$ctrl.version === 'nature'">
             <span class="md-headline"><small>{{$ctrl.data.name}}</small></span>
-            <span class="md-subhead"></span>
+            <span class="md-subhead">{{$ctrl.natureTypes[$ctrl.data.type] || $ctrl.data.type}}</span>
           </md-card-title-text>
           <md-card-title-media ng-if="$ctrl.version === 'monuments'">
             <div class="md-media-sm card-media"
@@ -117,7 +131,7 @@ function getTemplate() {
           </md-card-title-media>
         </md-card-title>
         <md-card-actions layout="row" layout-align="end center">
-          <md-button ng-click="$ctrl.showDetails($event, $ctrl.data)" ng-hide="true">Więcej informacji</md-button>
+          <md-button ng-click="$ctrl.showNatureDetails($ctrl.data)" ng-show="$ctrl.version === 'nature' && $ctrl.data.id">Więcej informacji</md-button>
           <md-button ng-if="$ctrl.version === 'monuments'" ng-click="$ctrl.showOnMap()">Mapa</md-button>
           <md-button ng-click="$ctrl.upload()">Prześlij zdjęcia</md-button>
         </md-card-actions>
