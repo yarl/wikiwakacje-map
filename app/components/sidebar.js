@@ -51,7 +51,7 @@ const SidebarComponent = {
         </div>
         <div class="ww-sidebar-info"
              layout="column" layout-align="center center"
-             ng-show="!$ctrl.cards || !$ctrl.cards.length">
+             ng-show="(!$ctrl.cards || !$ctrl.cards.length) && $ctrl.mapPosition.zoom >= 12">
           <md-icon>warning</md-icon>
           <span class="md-headline">Brak obiektów na tym obszarze</span>
         </div>

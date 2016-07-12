@@ -93,12 +93,7 @@ const MapComponent = {
           }
         });
 
-        vm.cards = {};
-        const cards = {};
-        data.forEach(element => {
-          cards[element.id] = element;
-        });
-        vm.cards = cards;
+        vm.cards = data;
         vm.loading.active = false;
         vm.highlight = "";
       })

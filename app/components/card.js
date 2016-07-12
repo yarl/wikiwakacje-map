@@ -89,7 +89,9 @@ const CardComponent = {
         url += "&lat=" + vm.data.lat + "&lon=" + vm.data.lon;
 
       } else if(vm.version === "nature") {
-        const description = vm.natureTypes[vm.data.type].toUpperCase() + " " + vm.data.name;
+        const description = vm.natureTypes[vm.data.type][0].toUpperCase()
+          + vm.natureTypes[vm.data.type].substring(1)
+          + ": " + vm.data.name;
         const category = getNatureCategory();
 
         url += "wikiwakacje-n&descriptionlang=pl";
@@ -103,7 +105,6 @@ const CardComponent = {
         url += "wikiwakacje-s&descriptionlang=pl";
         url += "&description=" + description + "&categories=" + category + "&id=" + vm.data.id;
         url += "&lat=" + vm.data.lat + "&lon=" + vm.data.lon;
-        debugger;
       }
       $window.open(url, "_blank");
     }
