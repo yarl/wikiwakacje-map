@@ -28,7 +28,7 @@ const CardComponent = {
       monument: "pomnik",
       cross: "krzyż przydrożny",
       artwork: "dzieło sztuki"
-    }
+    };
 
     vm.natureTypes = {
       Rezerwaty: "rezerwat przyrody",
@@ -36,6 +36,7 @@ const CardComponent = {
       ObszarySpecjalnejOchrony: "obszar specjalnej ochrony ptaków",
       SpecjalneObszaryOchrony: "specjalny obszar ochrony siedlisk",
       ParkiNarodowe: "park narodowy",
+      ZespolyPrzyrodniczoKrajobrazowe: "zespół przyrodniczo-krajobrazowy",
       PomnikiPrzyrody: "pomnik przyrody"
     };
 
@@ -62,6 +63,7 @@ const CardComponent = {
         ObszarySpecjalnejOchrony: vm.data.name,       // eg. Dolina Dolnej Wisły
         SpecjalneObszaryOchrony: vm.data.name,        // eg. Dolina Dolnej Wisły
         ParkiNarodowe: vm.data.name,                  // eg. Babiogórski Park Narodowy
+        ZespolyPrzyrodniczoKrajobrazowe: vm.data.name, // eg. Zakole Wawerskie
         PomnikiPrzyrody: "Natural monuments in Poland"
       };
       return names[vm.data.type];
