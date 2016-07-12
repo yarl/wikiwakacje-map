@@ -105,6 +105,39 @@ const MapComponent = {
     }
 
     function getArt() {
+      if(vm.center.zoom < 12 || !vm.bounds) {
+        vm.loading.active = false;
+        vm.cards = [];
+        vm.markers = {};
+        vm.highlight = "";
+        return;
+      }
+
+      if(mapService.forceMapState) {
+        mapService.forceMapState = false;
+        return;
+      }
+
+      vm.loading.active = true;
+      dataService.getArt(vm.bounds).then((data) => {
+        vm.loading.active = false;
+        vm.cards = data.data.elements;
+        vm.markers = {};
+        vm.highlight = "";
+
+        //debugger;
+
+        for(let element of data.data.elements) {
+          vm.markers[element.id] = {
+            lat: element.lat, lng: element.lon,
+            icon: vm.icon
+          }
+        }
+      }, (data) => {
+        vm.loading.active = false;
+        vm.cards = [];
+        //error
+      })
     }
 
     function getMonuments() {
@@ -135,6 +168,8 @@ const MapComponent = {
           }
         }
       }, (data) => {
+        vm.loading.active = false;
+        vm.cards = [];
         //error
       })
     }
@@ -150,11 +185,11 @@ const MapComponent = {
       <md-icon>cloud</md-icon>
       <span>Przyroda</span>
     </md-button>
-    <!--<md-button class="md-raised"
+    <md-button class="md-raised"
                ng-click="$ctrl.changeVersion('art')">
       <md-icon>extension</md-icon>
       <span>Sztuka</span>
-    </md-button>-->
+    </md-button>
   </div>
   <leaflet flex
       lf-center="$ctrl.center"

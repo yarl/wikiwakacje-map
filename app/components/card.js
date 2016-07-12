@@ -4,8 +4,15 @@ const CardComponent = {
   },
   controller: function($mdMedia, $mdDialog, $timeout, $window, mapService, versionService, dataService) {
     this.$onInit = function () {
+      //fix for monuments
       vm.data.name_ = dewikify(vm.data.name);
       vm.data.address_ = dewikify(vm.data.address);
+
+      //fix for art
+      if(vm.data.tags) {
+        const tag = vm.data.tags.historic || vm.data.tags.man_made || vm.data.tags.tourism;
+        vm.data.type = tag ? vm.artTypes[tag] : "?";
+      }
     };
 
     let vm = this;
@@ -14,6 +21,14 @@ const CardComponent = {
     vm.showOnMap = showOnMap;
     vm.upload = upload;
     vm.version = versionService.getVersion();
+
+    vm.artTypes = {
+      wayside_shrine: "kapliczka",
+      memorial: "pomnik",
+      monument: "pomnik",
+      cross: "krzyż przydrożny",
+      artwork: "dzieło sztuki"
+    }
 
     vm.natureTypes = {
       Rezerwaty: "rezerwat przyrody",
@@ -30,6 +45,28 @@ const CardComponent = {
       return text ? text.replace(/\[\[[^\[\]\|]*\|([^\[\]\|]*)\]\]/g, "$1") : "";
     }
 
+    function getArtCategory() {
+      const names = {
+        kapliczka: "Wayside shrines in Poland",
+        pomnik: "Monuments and memorials in Poland",
+        "krzyż przydrożny": "Wayside crosses in Poland",
+        "dzieło sztuki": "Sculptures in Poland"
+      };
+      return names[vm.data.type];
+    }
+
+    function getNatureCategory() {
+      const names = {
+        Rezerwaty: "Nature reserve " + vm.data.name,  //eg. Łażyn
+        ParkiKrajobrazowe: vm.data.name,              // eg. Nadwiślański Park Krajobrazowy
+        ObszarySpecjalnejOchrony: vm.data.name,       // eg. Dolina Dolnej Wisły
+        SpecjalneObszaryOchrony: vm.data.name,        // eg. Dolina Dolnej Wisły
+        ParkiNarodowe: vm.data.name,                  // eg. Babiogórski Park Narodowy
+        PomnikiPrzyrody: "Natural monuments in Poland"
+      };
+      return names[vm.data.type];
+    }
+
     function showOnMap() {
       $timeout(() => {
         mapService.forceMapState = true;
@@ -42,12 +79,29 @@ const CardComponent = {
     function upload() {
       let url = "https://commons.wikimedia.org/w/index.php?title=Special:UploadWizard&campaign=";
       if(vm.version === "monuments") {
+        const description = vm.data.adm3 + ", " + vm.data.name_;
         const category = vm.data.commonscat || "Cultural heritage monuments in " + vm.data.adm3;
-        url += "wikiwakacje-z&descriptionlang=pl&description="+vm.data.name_+"&categories="+category+"&id="+vm.data.id;
-        url += "&lat="+vm.data.lat+"&lon="+vm.data.lon;
+
+        url += "wikiwakacje-z&descriptionlang=pl";
+        url += "&description=" + description + "&categories=" + category + "&id=" + vm.data.id;
+        url += "&lat=" + vm.data.lat + "&lon=" + vm.data.lon;
+
       } else if(vm.version === "nature") {
-        url += "wikiwakacje-n&descriptionlang=pl&description="+vm.data.name+"&categories="+vm.data.name+"&id="+vm.data.id;
-        url += "&lat="+dataService.getLastCoord().lat+"&lon="+dataService.getLastCoord().lng;
+        const description = vm.natureTypes[vm.data.type].toUpperCase() + " " + vm.data.name;
+        const category = getNatureCategory();
+
+        url += "wikiwakacje-n&descriptionlang=pl";
+        url += "&description=" + description + "&categories=" + category + "&id=" + vm.data.id;
+        url += "&lat=" + dataService.getLastCoord().lat + "&lon=" + dataService.getLastCoord().lng;
+
+      } else if(vm.version === "art") {
+        const description = vm.data.tags.name || "";
+        const category = getArtCategory();
+
+        url += "wikiwakacje-s&descriptionlang=pl";
+        url += "&description=" + description + "&categories=" + category + "&id=" + vm.data.id;
+        url += "&lat=" + vm.data.lat + "&lon=" + vm.data.lon;
+        debugger;
       }
       $window.open(url, "_blank");
     }
@@ -114,15 +168,20 @@ const CardComponent = {
 function getTemplate() {
   return `<md-card md-theme="default" md-theme-watch class="ww-card">
         <md-card-title>
+          <md-card-title-text ng-show="$ctrl.version === 'art'">
+            <span class="md-headline"><small>{{$ctrl.data.tags.name || 'brak nazwy'}}</small></span>
+            <span class="md-subhead">{{$ctrl.data.type}}</span>
+          </md-card-title-text>
           <md-card-title-text ng-show="$ctrl.version === 'monuments'">
             <span class="md-headline"><small>{{$ctrl.data.name_}}</small></span>
             <span class="md-subhead">{{$ctrl.data.address_}}</span>
           </md-card-title-text>
           <md-card-title-text ng-show="$ctrl.version === 'nature'">
             <span class="md-headline"><small>{{$ctrl.data.name}}</small></span>
-            <span class="md-subhead">{{$ctrl.natureTypes[$ctrl.data.type] || $ctrl.data.type}}</span>
+            <span class="md-subhead">{{$ctrl.natureTypes[$ctrl.data.type]}}</span>
             <small>(ID: {{$ctrl.data.id || "?"}})</small>
           </md-card-title-text>
+
           <md-card-title-media ng-if="$ctrl.version === 'monuments'">
             <div class="md-media-sm card-media"
                  layout="row" layout-align="center center"
@@ -133,7 +192,7 @@ function getTemplate() {
         </md-card-title>
         <md-card-actions layout="row" layout-align="end center">
           <md-button ng-click="$ctrl.showNatureDetails($ctrl.data)" ng-show="$ctrl.version === 'nature' && $ctrl.data.id">Więcej informacji</md-button>
-          <md-button ng-if="$ctrl.version === 'monuments'" ng-click="$ctrl.showOnMap()">Mapa</md-button>
+          <md-button ng-if="$ctrl.version === 'monuments' || $ctrl.version === 'art'" ng-click="$ctrl.showOnMap()">Mapa</md-button>
           <md-button ng-click="$ctrl.upload()">Prześlij zdjęcia</md-button>
         </md-card-actions>
       </md-card>`;
