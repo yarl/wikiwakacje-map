@@ -155,6 +155,8 @@ const MapComponent = {
         vm.cards = data;
         vm.markers = {};
         vm.highlight = "";
+        
+        if(!data) return;
 
         for(let element of data) {
           vm.markers[element.id] = {
