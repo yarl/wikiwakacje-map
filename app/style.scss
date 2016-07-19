@@ -41,6 +41,18 @@ ww-sidebar {
       font-size: 50px;
     }
   }
+  
+  .ww-sidebar-outlist {
+    margin: 8px 16px;
+    box-sizing: border-box;
+    padding: 16px;
+    cursor: pointer;
+    color: rgba(0,0,0,0.54);
+    
+    & > span {
+      vertical-align: middle;
+    }
+  }
 
   .ww-cards {
     overflow: auto;
