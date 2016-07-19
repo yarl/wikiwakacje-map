@@ -7,6 +7,7 @@ const CardComponent = {
       //fix for monuments
       vm.data.name_ = dewikify(vm.data.name);
       vm.data.address_ = dewikify(vm.data.address);
+      vm.data.town = dewikify(vm.data.adm4);
 
       //fix for art
       if(vm.data.tags) {
@@ -43,7 +44,12 @@ const CardComponent = {
     // FUNCTIONS
 
     function dewikify(text) {
-      return text ? text.replace(/\[\[[^\[\]\|]*\|([^\[\]\|]*)\]\]/g, "$1") : "";
+      if(!text) return "";
+      
+      text = text.replace(/\[\[[^\[\]\|]*\|([^\[\]\|]*)\]\]/g, "$1");
+      text = text.replace(/[\[\]]/g, "");
+      text = text.replace(/\<\/?small\>/g, " ");
+      return text;
     }
 
     function getArtCategory() {
@@ -177,7 +183,10 @@ function getTemplate() {
           </md-card-title-text>
           <md-card-title-text ng-show="$ctrl.version === 'monuments'">
             <span class="md-headline"><small>{{$ctrl.data.name_}}</small></span>
-            <span class="md-subhead">{{$ctrl.data.address_}}</span>
+            <span class="md-subhead">
+              {{$ctrl.data.town}}<span ng-show="$ctrl.data.town && $ctrl.data.address_">,</span>
+              {{$ctrl.data.address_}}
+            </span>
           </md-card-title-text>
           <md-card-title-text ng-show="$ctrl.version === 'nature'">
             <span class="md-headline"><small>{{$ctrl.data.name}}</small></span>
