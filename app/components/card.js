@@ -81,7 +81,7 @@ const CardComponent = {
     function upload() {
       let url = "https://commons.wikimedia.org/w/index.php?title=Special:UploadWizard&campaign=";
       if(vm.version === "monuments") {
-        const description = vm.data.adm3 + ", " + vm.data.name_;
+        const description = vm.data.adm4 + ", " + vm.data.name_;
         const category = vm.data.commonscat || "Cultural heritage monuments in " + vm.data.adm3;
 
         url += "wikiwakacje-z&descriptionlang=pl";
